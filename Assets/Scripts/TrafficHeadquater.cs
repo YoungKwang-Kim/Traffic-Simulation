@@ -15,7 +15,24 @@ public class TrafficHeadquater : MonoBehaviour
     public TrafficSegment curSegment;
 
     public const string VehicleTagLayer = "AutonomouseVehicle"; // 자율주행차.
+    // 교차로들.
+    public List<TrafficIntersection> intersections = new List<TrafficIntersection>();
     
+    // 에디터용, 기즈모 속성들. 본부에서 조절하겠습니다.
+    public enum ArrowDraw
+    {
+        FixedCount,
+        ByLength,
+        Off
+    }
+
+    public bool hideGizmos = false;
+    public ArrowDraw arrowDrawType = ArrowDraw.ByLength;
+    public int arrowCount = 1;
+    public float arrowDistance = 5f;
+    public float arrowSizeWaypoint = 1;
+    public float arrowSizeIntersection = 0.5f;
+
     
     public List<TrafficWaypoint> GetAllWaypoints()
     {
