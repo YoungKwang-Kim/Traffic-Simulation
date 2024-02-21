@@ -62,11 +62,13 @@ public class WheelDriverControl : MonoBehaviour
             {
                 var wheelshape = Instantiate(leftWheelShape);
                 wheelshape.transform.parent = wheel.transform;
+                wheelshape.transform.localPosition = Vector3.zero;
             }
             else if (rightWheelShape != null && wheel.transform.localPosition.x > 0) // 오른쪽에 있는 휠
             {
                 var wheelshape = Instantiate(rightWheelShape);
                 wheelshape.transform.parent = wheel.transform;
+                wheelshape.transform.localPosition = Vector3.zero;
             }
             wheel.ConfigureVehicleSubsteps(10, 1, 1);
         }

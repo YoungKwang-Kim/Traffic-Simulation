@@ -13,6 +13,9 @@ public class TrafficHeadquater : MonoBehaviour
 
     public List<TrafficSegment> segments = new List<TrafficSegment>();
     public TrafficSegment curSegment;
+
+    public const string VehicleTagLayer = "AutonomouseVehicle"; // 자율주행차.
+    
     
     public List<TrafficWaypoint> GetAllWaypoints()
     {
