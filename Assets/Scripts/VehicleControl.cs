@@ -194,7 +194,7 @@ public class VehicleControl : MonoBehaviour
         float initRay = (raycastNumber / 2f) * raycastSpacing;
         float hitDistance = -1f;
 
-        for (float a = -initRay; a < initRay; a += raycastSpacing)
+        for (float a = -initRay; a <= initRay; a += raycastSpacing)
         {
             CastRay(raycastAnchor.transform.position, a, transform.forward,
                 raycastLength, out obstacleObject, out hitDistance);
@@ -243,7 +243,7 @@ public class VehicleControl : MonoBehaviour
         if (currentTarget.segment >= trafficHeadquarter.segments.Count || 
             currentTarget.waypoint >= trafficHeadquarter.segments[currentTarget.segment].wayPoints.Count)
         {
-            Debug.Log(currentTarget.ToString());
+            Debug.LogError(currentTarget.ToString());
         }
 
         Transform targetTransform = trafficHeadquarter.segments[currentTarget.segment].wayPoints[currentTarget.waypoint].transform;

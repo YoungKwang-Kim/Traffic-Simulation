@@ -17,7 +17,6 @@ public class VehicleSettingEditor : Editor
         jointSpring.spring = 70000f;
         jointSpring.damper = 3500f;
         jointSpring.targetPosition = 1f;
-        jointSpring.targetPosition = 1f;
         collider.suspensionSpring = jointSpring;
         
         WheelFrictionCurve frictionCurve = new WheelFrictionCurve();
