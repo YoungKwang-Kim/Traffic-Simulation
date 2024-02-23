@@ -27,7 +27,7 @@ public class TrafficIntersection : MonoBehaviour
     public List<TrafficSegment> lightGroup1 = new List<TrafficSegment>();
     public List<TrafficSegment> lightGroup2 = new List<TrafficSegment>();
     // 교차로 영역에 있는 자동차들을 가지고 있다.
-    private List<GameObject> vehicleQueue = new List<GameObject>();
+    private List<GameObject> vehiclesQueue = new List<GameObject>();
     private List<GameObject> vehiclesInIntersection = new List<GameObject>();
     private TrafficHeadquater trafficHeadquater;
     // 현재 빨간불 그룹.
@@ -63,8 +63,8 @@ public class TrafficIntersection : MonoBehaviour
     void MoveVehicleQueue()
     {
         // 큐에 있는 빨간불 신호 구간이 아닌 자동차들을 이동시킨다.
-        List<GameObject> newVehicleQueue = new List<GameObject>(vehicleQueue);
-        foreach (var vehicle in newVehicleQueue)
+        List<GameObject> newVehicleQueue = new List<GameObject>(vehiclesQueue);
+        foreach (GameObject vehicle in newVehicleQueue)
         {
             VehicleControl vehicleControl = vehicle.GetComponent<VehicleControl>();
             int vehicleSegment = vehicleControl.GetSegmentVehicleIsIn();
@@ -76,7 +76,7 @@ public class TrafficIntersection : MonoBehaviour
             }
         }
 
-        vehicleQueue = newVehicleQueue;
+        vehiclesQueue = newVehicleQueue;
     }
 
     void SwitchLights()
@@ -98,7 +98,7 @@ public class TrafficIntersection : MonoBehaviour
 
     private void Start()
     {
-        vehicleQueue = new List<GameObject>();
+        vehiclesQueue = new List<GameObject>();
         vehiclesInIntersection = new List<GameObject>();
         lastChangeLightTime = Time.time;
     }
@@ -131,6 +131,8 @@ public class TrafficIntersection : MonoBehaviour
                 break;
             case IntersectionType.STOP: 
                 break;
+            default: 
+                break;
         }
     }
     // 이미 교차로 안에 있는 차량인지 판단합니다.
@@ -144,7 +146,7 @@ public class TrafficIntersection : MonoBehaviour
             }
         }
 
-        foreach (var vehicle in vehicleQueue)
+        foreach (var vehicle in vehiclesQueue)
         {
             if (vehicle.GetInstanceID() == target.GetInstanceID())
             {
@@ -178,10 +180,10 @@ public class TrafficIntersection : MonoBehaviour
         if (IsPrioritySegment(vehicleSegment) == false) 
         { 
             // 교차로에 차가 한대라도 있다면. 큐에 넣고 대기.
-            if (vehicleQueue.Count > 0 || vehiclesInIntersection.Count > 0)
+            if (vehiclesQueue.Count > 0 || vehiclesInIntersection.Count > 0)
             {
                 vehicleControl.vehicleStatus = VehicleControl.Status.STOP;
-                vehicleQueue.Add(vehicle);
+                vehiclesQueue.Add(vehicle);
             }
             // 교차로에 차가 없다면.
             else
@@ -201,11 +203,11 @@ public class TrafficIntersection : MonoBehaviour
     {
         vehicle.GetComponent<VehicleControl>().vehicleStatus = VehicleControl.Status.GO;
         vehiclesInIntersection.Remove(vehicle);
-        vehicleQueue.Remove(vehicle);
+        vehiclesQueue.Remove(vehicle);
 
-        if (vehicleQueue.Count > 0 && vehiclesInIntersection.Count == 0)
+        if (vehiclesQueue.Count > 0 && vehiclesInIntersection.Count == 0)
         {
-            vehicleQueue[0].GetComponent<VehicleControl>().vehicleStatus = VehicleControl.Status.GO;
+            vehiclesQueue[0].GetComponent<VehicleControl>().vehicleStatus = VehicleControl.Status.GO;
         }
     }
     // 신호 교차로 트리거. 차량을 멈추거나 이동시키거나.
@@ -217,7 +219,7 @@ public class TrafficIntersection : MonoBehaviour
         if (IsRedLightSegment(vehicleSegment))
         {
             vehicleControl.vehicleStatus = VehicleControl.Status.STOP;
-            vehicleQueue.Add(vehicle);
+            vehiclesQueue.Add(vehicle);
         }
         else
         {
@@ -232,11 +234,11 @@ public class TrafficIntersection : MonoBehaviour
     // 긴급 상황 발생 트리거.
     void TriggerEmergency(GameObject vehicle)
     {
-        VehicleControl vehicleControl = GetComponent<VehicleControl>();
+        VehicleControl vehicleControl = vehicle.GetComponent<VehicleControl>();
         int vehicleSegment = vehicleControl.GetSegmentVehicleIsIn();
 
         vehicleControl.vehicleStatus = VehicleControl.Status.STOP;
-        vehicleQueue.Add(vehicle);
+        vehiclesQueue.Add(vehicle);
     }
     // 빠져나갔다면, 긴급상황이 해제되었을 경우.
     private void ExitEmergency(GameObject vehicle)

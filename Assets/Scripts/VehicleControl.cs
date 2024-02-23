@@ -240,6 +240,11 @@ public class VehicleControl : MonoBehaviour
         float brake = 0f;
         float steering = 0;
         wheelDriverControl.maxSpeed = initMaxSpeed;
+        if (currentTarget.segment >= trafficHeadquarter.segments.Count || 
+            currentTarget.waypoint >= trafficHeadquarter.segments[currentTarget.segment].wayPoints.Count)
+        {
+            Debug.Log(currentTarget.ToString());
+        }
 
         Transform targetTransform = trafficHeadquarter.segments[currentTarget.segment].wayPoints[currentTarget.waypoint].transform;
         Transform nextTargetTransform = trafficHeadquarter.segments[nextTarget.segment].wayPoints[nextTarget.waypoint].transform;
@@ -310,7 +315,7 @@ public class VehicleControl : MonoBehaviour
                             steering = -0.3f;
                         }
                         // ¿ÞÂÊ.
-                        if (dotRight < -0.1f)
+                        else if (dotRight < -0.1f)
                         {
                             steering = 0.3f;
                         }

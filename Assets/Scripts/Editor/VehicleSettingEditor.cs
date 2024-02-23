@@ -39,7 +39,7 @@ public class VehicleSettingEditor : Editor
         PrefabUtility.UnpackPrefabInstance(selected, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
         // 1. 레이캐스트 앵커 만들고.
         GameObject anchor = EditorHelper.CreateGameObject("Raycast Anchor", selected.transform);
-        anchor.transform.localPosition = Vector3.zero;
+        anchor.transform.localPosition = new Vector3(0, 0.3f, 1);
         anchor.transform.localRotation = Quaternion.identity;
         // 2. 스크립트들 설정.
         VehicleControl vehicleControl = EditorHelper.AddComponent<VehicleControl>(selected);
